@@ -23,7 +23,7 @@
 </template>
 
 <script setup>
-import { computed, ref, toValue, toRef } from 'vue'
+import { computed, ref, toValue, toRef, watch } from 'vue'
 
 const props = defineProps({
   imagesSrc: {
@@ -40,13 +40,19 @@ const props = defineProps({
   }
 })
 
+const selectedImageRef = toRef(props, 'selectedImage')
+
+watch(selectedImageRef, () => {
+  currentImage.value = toValue(props.selectedImage)
+})
+
 const modalClasses = computed(() => {
   return {
     hidden: !props.isVisible
   }
 })
 
-const currentImage = ref(toValue(toRef(props, 'selectedImage')))
+const currentImage = ref(toValue(props.selectedImage))
 const currentIndex = computed(() => {
   return props.imagesSrc.findIndex((el) => el === currentImage.value)
 })
