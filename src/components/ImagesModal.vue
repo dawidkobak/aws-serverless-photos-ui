@@ -1,18 +1,38 @@
 <template>
   <div id="myModal" class="modal" :class="modalClasses">
     <span class="close" @click="closeModal">&times;</span>
-    <img class="modal-content" id="img01" :src="props.imageSrc" />
+    <img class="modal-content inset-0" id="img01" :src="currentImage" />
     <div id="caption"></div>
+    <button
+      v-show="existsPreviousImage"
+      @click="previousImage"
+      class="carousel-button prev"
+      data-carousel-button="prev"
+    >
+      &#8656;
+    </button>
+    <button
+      v-show="existsNextImage"
+      @click="nextImage"
+      class="carousel-button next"
+      data-carousel-button="next"
+    >
+      &#8658;
+    </button>
   </div>
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, ref, toValue, toRef } from 'vue'
 
 const props = defineProps({
   imagesSrc: {
     required: true,
-    type: Object
+    type: Array
+  },
+  selectedImage: {
+    required: true,
+    type: String
   },
   isVisible: {
     required: true,
@@ -26,6 +46,24 @@ const modalClasses = computed(() => {
   }
 })
 
+const currentImage = ref(toValue(toRef(props, 'selectedImage')))
+const currentIndex = computed(() => {
+  return props.imagesSrc.findIndex((el) => el === currentImage.value)
+})
+const existsPreviousImage = computed(() => {
+  return currentIndex.value - 1 >= 0
+})
+const existsNextImage = computed(() => {
+  return currentIndex.value + 1 < props.imagesSrc.length
+})
+
+const previousImage = () => {
+  currentImage.value = props.imagesSrc.at(currentIndex.value - 1)
+}
+const nextImage = () => {
+  currentImage.value = props.imagesSrc.at(currentIndex.value + 1)
+}
+
 const closeModal = () => {
   emit('closeModal')
 }
@@ -38,7 +76,6 @@ const emit = defineEmits(['closeModal'])
 .modal {
   position: fixed;
   z-index: 1;
-  padding-top: 100px;
   left: 0;
   top: 0;
   width: 100%;
@@ -50,6 +87,7 @@ const emit = defineEmits(['closeModal'])
 
 .modal-content {
   margin: auto;
+  position: absolute;
   display: block;
   width: 80%;
   max-width: 700px;
@@ -113,5 +151,38 @@ const emit = defineEmits(['closeModal'])
   .modal-content {
     width: 100%;
   }
+}
+
+.carousel-button {
+  position: absolute;
+  z-index: 2;
+  background: none;
+  border: none;
+  font-size: 4rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  border-radius: 0.25rem;
+  padding: 0 0.5rem;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.carousel-button:hover,
+.carousel-button:focus {
+  color: white;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.carousel-button:focus {
+  outline: 1px solid black;
+}
+
+.carousel-button.prev {
+  left: 1rem;
+}
+
+.carousel-button.next {
+  right: 1rem;
 }
 </style>

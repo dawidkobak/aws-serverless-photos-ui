@@ -5,7 +5,7 @@ import { StorageFactory } from '@/storage/storage'
 import { Authentication } from '@/auth/authentication'
 import ButtonComp from '../components/ButtonComp.vue'
 import InputComp from '../components/InputComp.vue'
-import ImageModal from '../components/ImageModal.vue'
+import ImagesModal from '../components/ImagesModal.vue'
 import UploadFileForm from '../components/UploadFileForm.vue'
 
 const auth = new Authentication(
@@ -86,8 +86,9 @@ const addLinkToPhoto = (e) => {
         </li>
       </ul>
     </div>
-    <ImageModal
-      :image-src="imageSrc"
+    <ImagesModal
+      :selected-image="imageSrc"
+      :images-src="photosLinks"
       :is-visible="imageModalVisible"
       @close-modal="imageModalVisible = false"
     />
