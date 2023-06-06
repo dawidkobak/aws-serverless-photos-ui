@@ -5,6 +5,7 @@ import { StorageFactory } from '@/storage/storage'
 import { Authentication } from '@/auth/authentication'
 import ButtonComp from '../components/ButtonComp.vue'
 import InputComp from '../components/InputComp.vue'
+import ImageModal from '../components/ImageModal.vue'
 
 const auth = new Authentication(
   config.userPoolId,
@@ -25,6 +26,9 @@ const fileInputs = ref([])
 const photosList = ref([])
 const photosLinks = ref([])
 const active = ref(false)
+const imageSrc = ref('')
+const imageModalVisible = ref(false)
+const queryPhotos = ref('')
 
 const uploadFunc = async () => {
   if (!fileInputs.value.length > 0) {
@@ -41,6 +45,7 @@ const uploadFunc = async () => {
       .then((link) => photosLinks.value.push(link))
       .catch((err) => console.log(err))
   })
+  fileInputs.value = []
 }
 
 const getPhotos = () => {
@@ -82,6 +87,11 @@ const addFileFromZone = (event) => {
     })
   }
 }
+
+const showImageModal = (image) => {
+  imageSrc.value = image
+  imageModalVisible.value = true
+}
 </script>
 
 <template>
@@ -109,19 +119,40 @@ const addFileFromZone = (event) => {
             @input="addFileFromInput"
           />
         </div>
+        <div v-if="fileInputs.length > 0">
+          <span>Files to upload:</span>
+          <ul>
+            <li v-for="file in fileInputs" :key="file.name">{{ file.name }}</li>
+          </ul>
+        </div>
         <ButtonComp class="mt-5" full-width type="submit" :on-click="uploadFunc">Upload</ButtonComp>
       </form>
     </div>
 
     <div class="photos mt-20">
-      <InputComp type="text" placeholder="Search photos by tag" />
+      <InputComp
+        id="queryPhotos"
+        type="text"
+        v-model="queryPhotos"
+        placeholder="Search photos by tag"
+      />
       <ButtonComp class="mt-1 mb-10" full-width :on-click="getPhotos">Get photos</ButtonComp>
       <ul class="photosList">
-        <li v-for="photo in photosLinks" :key="photo">
-          <img width="200" :src="photo" />
+        <li class="mb-3" v-for="photo in photosLinks" :key="photo">
+          <img
+            class="rounded cursor-pointer hover:opacity-70"
+            width="200"
+            :src="photo"
+            @click="showImageModal(photo)"
+          />
         </li>
       </ul>
     </div>
+    <ImageModal
+      :image-src="imageSrc"
+      :is-visible="imageModalVisible"
+      @close-modal="imageModalVisible = false"
+    />
   </div>
 </template>
 

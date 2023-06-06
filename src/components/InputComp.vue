@@ -9,8 +9,9 @@ const props = defineProps({
     type: String
   },
   label: {
-    required: true,
-    type: String
+    required: false,
+    type: String,
+    default: ''
   },
   type: {
     required: false,
