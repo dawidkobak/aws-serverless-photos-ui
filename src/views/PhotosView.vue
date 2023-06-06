@@ -6,6 +6,7 @@ import { Authentication } from '@/auth/authentication'
 import ButtonComp from '../components/ButtonComp.vue'
 import InputComp from '../components/InputComp.vue'
 import ImageModal from '../components/ImageModal.vue'
+import UploadFileForm from '../components/UploadFileForm.vue'
 
 const auth = new Authentication(
   config.userPoolId,
@@ -22,31 +23,11 @@ const storageFactory = new StorageFactory(
 )
 
 const helloContent = ref('Hello Guest')
-const fileInputs = ref([])
 const photosList = ref([])
 const photosLinks = ref([])
-const active = ref(false)
 const imageSrc = ref('')
 const imageModalVisible = ref(false)
 const queryPhotos = ref('')
-
-const uploadFunc = async () => {
-  if (!fileInputs.value.length > 0) {
-    return
-  }
-
-  const userStorage = await storageFactory.createUserStorage()
-  const toBeUploaded = [...fileInputs.value]
-
-  toBeUploaded.forEach(async (file) => {
-    userStorage
-      .upload(file)
-      .then((data) => userStorage.getPublicUrl(data.key))
-      .then((link) => photosLinks.value.push(link))
-      .catch((err) => console.log(err))
-  })
-  fileInputs.value = []
-}
 
 const getPhotos = () => {
   photosLinks.value = []
@@ -67,30 +48,14 @@ const getPhotos = () => {
 
 onMounted(() => getPhotos())
 
-const toggleActive = () => {
-  active.value = !active.value
-}
-
-const addFileFromInput = (e) => {
-  for (let i = 0; i < e.target.files.length; i++) {
-    fileInputs.value.push(e.target.files.item(i))
-  }
-}
-
-const addFileFromZone = (event) => {
-  if (event.dataTransfer.items) {
-    ;[...event.dataTransfer.items].forEach((item) => {
-      if (item.kind === 'file') {
-        const file = item.getAsFile()
-        fileInputs.value.push(file)
-      }
-    })
-  }
-}
-
 const showImageModal = (image) => {
   imageSrc.value = image
   imageModalVisible.value = true
+}
+
+const addLinkToPhoto = (e) => {
+  console.log(e)
+  photosLinks.value.push(e)
 }
 </script>
 
@@ -99,34 +64,7 @@ const showImageModal = (image) => {
     <span class="text-2xl" id="helloMessage">{{ helloContent }}</span>
 
     <div id="storage">
-      <form>
-        <div
-          @dragenter.prevent="toggleActive"
-          @dragleave.prevent="toggleActive"
-          @dragover.prevent
-          @drop.prevent="toggleActive"
-          @drop="addFileFromZone"
-          :class="{ 'active-dropzone': active }"
-          class="dropzone"
-        >
-          <span>Drag or Drop File</span>
-          <span>OR</span>
-          <input
-            type="file"
-            id="dropzoneFile"
-            class="dropzoneFile"
-            multiple
-            @input="addFileFromInput"
-          />
-        </div>
-        <div v-if="fileInputs.length > 0">
-          <span>Files to upload:</span>
-          <ul>
-            <li v-for="file in fileInputs" :key="file.name">{{ file.name }}</li>
-          </ul>
-        </div>
-        <ButtonComp class="mt-5" full-width type="submit" :on-click="uploadFunc">Upload</ButtonComp>
-      </form>
+      <UploadFileForm @file-uploaded="addLinkToPhoto" />
     </div>
 
     <div class="photos mt-20">
@@ -155,24 +93,3 @@ const showImageModal = (image) => {
     />
   </div>
 </template>
-
-<style scoped>
-.dropzone {
-  width: 400px;
-  height: 200px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  row-gap: 16px;
-  border: 2px dashed #3b82f6;
-  background-color: #fff;
-  transition: 0.3s ease all;
-}
-
-.active-dropzone {
-  color: #fff;
-  border-color: #fff;
-  background-color: #1d4ed8;
-}
-</style>
