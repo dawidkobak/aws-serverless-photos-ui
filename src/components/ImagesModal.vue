@@ -52,28 +52,27 @@ const modalClasses = computed(() => {
   }
 })
 
-const currentImage = ref(toValue(props.selectedImage))
-const currentIndex = computed(() => {
+const currentImage = ref()
+const currentImageIndex = computed(() => {
   return props.imagesSrc.findIndex((el) => el === currentImage.value)
 })
 const existsPreviousImage = computed(() => {
-  return currentIndex.value - 1 >= 0
+  return currentImageIndex.value - 1 >= 0
 })
 const existsNextImage = computed(() => {
-  return currentIndex.value + 1 < props.imagesSrc.length
+  return currentImageIndex.value + 1 < props.imagesSrc.length
 })
 
 const previousImage = () => {
-  currentImage.value = props.imagesSrc.at(currentIndex.value - 1)
+  currentImage.value = props.imagesSrc.at(currentImageIndex.value - 1)
 }
 const nextImage = () => {
-  currentImage.value = props.imagesSrc.at(currentIndex.value + 1)
+  currentImage.value = props.imagesSrc.at(currentImageIndex.value + 1)
 }
 
 const closeModal = () => {
   emit('closeModal')
 }
-
 const emit = defineEmits(['closeModal'])
 </script>
 

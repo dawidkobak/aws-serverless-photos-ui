@@ -15,7 +15,7 @@
           id="fileInput"
           class="hidden-input"
           @change="onChange"
-          ref="file"
+          ref="fileInput"
           accept=".jpg,.jpeg,.png"
         />
 
@@ -58,10 +58,10 @@ import { StorageFactory } from '@/storage/storage'
 import { Authentication } from '@/auth/authentication'
 const isDragging = ref(false)
 const files = ref([])
-const file = ref(null)
+const fileInput = ref(null)
 
 const onChange = () => {
-  files.value = [...file.value.files]
+  files.value = [...files.value, ...fileInput.value.files]
 }
 
 const generateThumbnail = (file) => {
@@ -97,7 +97,7 @@ const dropzoneClasses = computed(() => {
 
 const drop = (e) => {
   e.preventDefault()
-  file.value.files = e.dataTransfer.files
+  fileInput.value.files = e.dataTransfer.files
   onChange()
   isDragging.value = false
 }

@@ -98,11 +98,14 @@ const registerFunc = () => {
     .register(registerRequest.value)
     .then((resp) => {
       console.log(resp)
+      info.value =
+        'Confirmation code sent to provided email address. Check your mailbox and enter confirmation code below'
+      infoClass.value = ['text-green-600']
       confirmationCodeSent.value = true
     })
     .catch((err) => {
       console.log(err)
-      info.value = err
+      info.value = err.message
       infoClass.value = ['text-red-600']
     })
 }
@@ -137,10 +140,6 @@ const loginFunc = () => {
       </form>
 
       <div class="mt-5" v-if="confirmationCodeSent && variant === 'REGISTER'">
-        <span
-          >Confirmation code sent to provided email address. Check your mailbox and enter
-          confirmation code below</span
-        >
         <InputComp
           id="confirmation"
           label="Confirmation code"
