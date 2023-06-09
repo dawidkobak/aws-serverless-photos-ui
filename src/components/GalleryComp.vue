@@ -1,14 +1,15 @@
 <template>
-  <ul>
-    <li class="mb-3" v-for="photo in props.photosLinks" :key="photo">
-      <img
-        class="rounded cursor-pointer hover:opacity-70"
-        width="200"
-        :src="photo"
-        @click="showImageSlider(photo)"
-      />
-    </li>
-  </ul>
+  <div class="grid grid-cols-3">
+    <img
+      v-for="photo in props.photosLinks"
+      :key="photo"
+      class="rounded cursor-pointer hover:opacity-70"
+      width="200"
+      :src="photo"
+      @click="showImageSlider(photo)"
+    />
+  </div>
+
   <ImagesSlider
     :selected-image="selectedImage"
     :images-src="props.photosLinks"
