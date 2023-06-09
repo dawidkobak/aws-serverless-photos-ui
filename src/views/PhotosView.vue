@@ -1,7 +1,9 @@
 <template>
   <div class="mt-10">
-    <span class="text-2xl" id="helloMessage">{{ helloContent }}</span>
-
+    <div class="pb-5">
+      <span class="text-2xl" id="helloMessage">{{ helloContent }}</span>
+      <ButtonComp :on-click="logout" :styles="logoutBtnStyles"> Log out </ButtonComp>
+    </div>
     <UploadFileForm @file-uploaded="addLinkToPhoto" />
 
     <div class="photos mt-20">
@@ -23,6 +25,7 @@ import { onMounted, ref } from 'vue'
 import { config } from '@/env'
 import { StorageFactory } from '@/storage/storage'
 import { Authentication } from '@/auth/authentication'
+import { useRouter } from 'vue-router'
 import ButtonComp from '../components/ButtonComp.vue'
 import InputComp from '../components/InputComp.vue'
 import UploadFileForm from '../components/UploadFileForm.vue'
@@ -46,6 +49,7 @@ const helloContent = ref('Hello Guest')
 const photosList = ref([])
 const photosLinks = ref([])
 const queryPhotos = ref('')
+const router = useRouter()
 
 const getPhotos = () => {
   photosLinks.value = []
@@ -69,5 +73,14 @@ onMounted(() => getPhotos())
 const addLinkToPhoto = (e) => {
   console.log(e)
   photosLinks.value.push(e)
+}
+
+const logout = () => {
+  auth.logout()
+  router.push({ name: 'Authorization' })
+}
+
+const logoutBtnStyles = {
+  'float-right': true
 }
 </script>

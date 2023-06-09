@@ -43,11 +43,16 @@ const props = defineProps({
     required: false,
     type: Function,
     default: () => {}
+  },
+  styles: {
+    required: false,
+    type: Object
   }
 })
 
 const additionalClasses = computed(() => {
   return {
+    ...props.styles,
     'cursor-default': props.disabled,
     'w-full': props.fullWidth,
     'text-gray-900': props.secondary,
