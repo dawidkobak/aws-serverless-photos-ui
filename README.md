@@ -6,7 +6,7 @@ https://dkobak-ns-1.s3.eu-central-1.amazonaws.com/index.html#/
 
 Simple UI for application like Google Photos.
 
-Functionalities:
+Functionalities (on AWS site):
 
 - Upload photos to S3 bucket
 - read phtos
