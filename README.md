@@ -1,14 +1,17 @@
 # aws-serverless-photos-ui
 
-This template should help get you started developing with Vue 3 in Vite.
+## Demo:
 
-## Recommended IDE Setup
+https://dkobak-ns-1.s3.eu-central-1.amazonaws.com/index.html#/
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+Simple UI for application like Google Photos.
 
-## Customize configuration
+Functionalities:
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+- Upload photos to S3 bucket
+- read phtos
+- Cognito identity and access management
+- Rekognition with labels detection on the photo
 
 ## Project Setup
 
@@ -28,8 +31,8 @@ npm run dev
 npm run build
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+### Release on AWS (configuration aws cli required)
 
 ```sh
-npm run lint
+npm run release
 ```
