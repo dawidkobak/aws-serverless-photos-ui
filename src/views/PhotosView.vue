@@ -1,3 +1,23 @@
+<template>
+  <div class="mt-10">
+    <span class="text-2xl" id="helloMessage">{{ helloContent }}</span>
+
+    <UploadFileForm @file-uploaded="addLinkToPhoto" />
+
+    <div class="photos mt-20">
+      <InputComp
+        id="queryPhotos"
+        type="text"
+        v-model="queryPhotos"
+        placeholder="Search photos by tag"
+      />
+      <ButtonComp class="mt-1 mb-10" full-width :on-click="getPhotos">Get photos</ButtonComp>
+
+      <GalleryComp :photos-links="photosLinks" />
+    </div>
+  </div>
+</template>
+
 <script setup>
 import { onMounted, ref } from 'vue'
 import { config } from '@/env'
@@ -5,8 +25,8 @@ import { StorageFactory } from '@/storage/storage'
 import { Authentication } from '@/auth/authentication'
 import ButtonComp from '../components/ButtonComp.vue'
 import InputComp from '../components/InputComp.vue'
-import ImagesModal from '../components/ImagesModal.vue'
 import UploadFileForm from '../components/UploadFileForm.vue'
+import GalleryComp from '../components/GalleryComp.vue'
 
 const auth = new Authentication(
   config.userPoolId,
@@ -25,8 +45,6 @@ const storageFactory = new StorageFactory(
 const helloContent = ref('Hello Guest')
 const photosList = ref([])
 const photosLinks = ref([])
-const imageSrc = ref('')
-const imageModalVisible = ref(false)
 const queryPhotos = ref('')
 
 const getPhotos = () => {
@@ -48,49 +66,8 @@ const getPhotos = () => {
 
 onMounted(() => getPhotos())
 
-const showImageModal = (image) => {
-  imageSrc.value = image
-  imageModalVisible.value = true
-}
-
 const addLinkToPhoto = (e) => {
   console.log(e)
   photosLinks.value.push(e)
 }
 </script>
-
-<template>
-  <div class="mt-10">
-    <span class="text-2xl" id="helloMessage">{{ helloContent }}</span>
-
-    <div id="storage">
-      <UploadFileForm @file-uploaded="addLinkToPhoto" />
-    </div>
-
-    <div class="photos mt-20">
-      <InputComp
-        id="queryPhotos"
-        type="text"
-        v-model="queryPhotos"
-        placeholder="Search photos by tag"
-      />
-      <ButtonComp class="mt-1 mb-10" full-width :on-click="getPhotos">Get photos</ButtonComp>
-      <ul class="photosList">
-        <li class="mb-3" v-for="photo in photosLinks" :key="photo">
-          <img
-            class="rounded cursor-pointer hover:opacity-70"
-            width="200"
-            :src="photo"
-            @click="showImageModal(photo)"
-          />
-        </li>
-      </ul>
-    </div>
-    <ImagesModal
-      :selected-image="imageSrc"
-      :images-src="photosLinks"
-      :is-visible="imageModalVisible"
-      @close-modal="imageModalVisible = false"
-    />
-  </div>
-</template>

@@ -1,3 +1,40 @@
+<template>
+  <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+    <div class="bg-white px-4 py-8 shadow sm:rounded-lg sm:px-10">
+      <form class="space-y-6" @submit.prevent="handleSubmit">
+        <span :class="infoClass"> {{ info }}</span>
+        <InputComp id="email" label="Email address" type="email" v-model="email" />
+        <InputComp id="password" label="Password" type="password" v-model="password" />
+        <div>
+          <ButtomComp fullWidth type="submit">
+            {{ buttonCaption }}
+          </ButtomComp>
+        </div>
+      </form>
+
+      <div class="mt-5" v-if="confirmationCodeSent && variant === 'REGISTER'">
+        <InputComp
+          id="confirmation"
+          label="Confirmation code"
+          type="number"
+          v-model="confirmationCode"
+          class="mt-3"
+        />
+        <ButtomComp fullWidth type="submit" class="mt-5" :on-click="confirmFunc">
+          Confirm
+        </ButtomComp>
+      </div>
+
+      <div className="flex gap-2 justify-center text-sm mt-6 px-2 text-gray-500">
+        <div>{{ authActionCaption }}</div>
+        <div @click="toggleVariant" className="underline cursor-pointer">
+          {{ authActionCaption2 }}
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
 <script setup>
 import { ref, computed } from 'vue'
 import ButtomComp from './ButtonComp.vue'
@@ -124,40 +161,3 @@ const loginFunc = () => {
     })
 }
 </script>
-
-<template>
-  <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-    <div class="bg-white px-4 py-8 shadow sm:rounded-lg sm:px-10">
-      <form class="space-y-6" @submit.prevent="handleSubmit">
-        <span :class="infoClass"> {{ info }}</span>
-        <InputComp id="email" label="Email address" type="email" v-model="email" />
-        <InputComp id="password" label="Password" type="password" v-model="password" />
-        <div>
-          <ButtomComp fullWidth type="submit">
-            {{ buttonCaption }}
-          </ButtomComp>
-        </div>
-      </form>
-
-      <div class="mt-5" v-if="confirmationCodeSent && variant === 'REGISTER'">
-        <InputComp
-          id="confirmation"
-          label="Confirmation code"
-          type="number"
-          v-model="confirmationCode"
-          class="mt-3"
-        />
-        <ButtomComp fullWidth type="submit" class="mt-5" :on-click="confirmFunc">
-          Confirm
-        </ButtomComp>
-      </div>
-
-      <div className="flex gap-2 justify-center text-sm mt-6 px-2 text-gray-500">
-        <div>{{ authActionCaption }}</div>
-        <div @click="toggleVariant" className="underline cursor-pointer">
-          {{ authActionCaption2 }}
-        </div>
-      </div>
-    </div>
-  </div>
-</template>

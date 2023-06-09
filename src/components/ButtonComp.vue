@@ -1,3 +1,15 @@
+<template>
+  <button
+    :type="props.type"
+    :disabled="props.disabled"
+    class="flex justify-center rounded-md px-3 py-2 test-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+    :class="additionalClasses"
+    @click="props.onClick"
+  >
+    <slot></slot>
+  </button>
+</template>
+
 <script setup>
 import { computed } from 'vue'
 
@@ -45,15 +57,3 @@ const additionalClasses = computed(() => {
   }
 })
 </script>
-
-<template>
-  <button
-    :type="props.type"
-    :disabled="props.disabled"
-    class="flex justify-center rounded-md px-3 py-2 test-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-    :class="additionalClasses"
-    @click="props.onClick"
-  >
-    <slot></slot>
-  </button>
-</template>

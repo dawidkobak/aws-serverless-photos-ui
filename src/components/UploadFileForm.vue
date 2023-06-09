@@ -56,6 +56,7 @@ import ButtonComp from './ButtonComp.vue'
 import { config } from '@/env'
 import { StorageFactory } from '@/storage/storage'
 import { Authentication } from '@/auth/authentication'
+
 const isDragging = ref(false)
 const files = ref([])
 const fileInput = ref(null)
