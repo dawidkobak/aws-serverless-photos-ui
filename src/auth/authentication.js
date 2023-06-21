@@ -1,7 +1,7 @@
 import {
   CognitoUserPool,
-  CognitoUserAttribute,
   CognitoUser,
+  CognitoUserAttribute,
   AuthenticationDetails
 } from 'amazon-cognito-identity-js'
 import { fromCognitoIdentityPool } from '@aws-sdk/credential-providers'
@@ -136,7 +136,7 @@ export class Authentication {
     const loginKey = `cognito-idp.${this.region}.amazonaws.com/${this.userPoolId}`
     const params = {
       clientConfig: { region: this.region },
-      identityPoolId: 'eu-central-1:18e707e3-9a9c-46fe-94e8-69bafb759871',
+      identityPoolId: `${this.identityId}`,
       logins: {
         [loginKey]: token
       }

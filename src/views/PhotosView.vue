@@ -13,7 +13,7 @@
         v-model="queryPhotos"
         placeholder="Search photos by tag"
       />
-      <ButtonComp class="mt-1 mb-10" full-width :on-click="getPhotos">Get photos</ButtonComp>
+      <ButtonComp class="mt-4 mb-10" full-width :on-click="getPhotos">Get photos</ButtonComp>
 
       <GalleryComp :photos-links="photosLinks" />
     </div>
@@ -33,7 +33,7 @@ import GalleryComp from '../components/GalleryComp.vue'
 
 const auth = new Authentication(
   config.userPoolId,
-  config.identityId,
+  config.identityPoolId,
   config.webClientId,
   config.region
 )

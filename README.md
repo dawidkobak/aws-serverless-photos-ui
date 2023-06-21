@@ -2,7 +2,7 @@
 
 ## Demo:
 
-https://dkobak-ns-1.s3.eu-central-1.amazonaws.com/index.html#/
+https://dkobak-photos.s3.eu-central-1.amazonaws.com/index.html#/
 
 Simple UI for application like Google Photos.
 

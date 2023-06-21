@@ -105,7 +105,7 @@ const drop = (e) => {
 
 const auth = new Authentication(
   config.userPoolId,
-  config.identityId,
+  config.identityPoolId,
   config.webClientId,
   config.region
 )

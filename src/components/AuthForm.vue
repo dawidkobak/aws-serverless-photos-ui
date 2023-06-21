@@ -88,7 +88,7 @@ const handleLogin = () => {
 
 const auth = new Authentication(
   config.userPoolId,
-  config.identityId,
+  config.identityPoolId,
   config.webClientId,
   config.region
 )
@@ -97,7 +97,7 @@ const registerRequest = computed(() => {
   return {
     email: email.value,
     password: password.value,
-    website: 'jkan.pl'
+    website: 'photos-app'
   }
 })
 
@@ -156,7 +156,7 @@ const loginFunc = () => {
     })
     .catch((err) => {
       console.log(err)
-      info.value = err
+      info.value = err.message
       infoClass.value = ['text-red-600']
     })
 }
